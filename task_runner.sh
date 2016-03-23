@@ -4,6 +4,7 @@ USER="test"
 PASS="test"
 SERVICE_ENDPOINT="10.0.0.255:9999"
 
+# INPUT:
 # Service listens on the same host, public IP. Accepts params by GET/POST.
 # API token expires in 5mins.
 # If task is not started, returns 404 code with "Not found" message.
@@ -12,6 +13,10 @@ SERVICE_ENDPOINT="10.0.0.255:9999"
 # We need to start task, control its result and restart if failed or every 60 seconds. 
 # The process must work on permanent basis in background.
 
+# OBJECTIVE:
+# 1) Universalize;
+# 2) Optimize;
+# 3) Secure.
 
 while true; do
 curl -u $USER:$PASS http://$SERVICE_ENDPOINT/apitoken > api_token
