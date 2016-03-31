@@ -19,7 +19,7 @@ SERVICE_ENDPOINT="10.0.0.255:9999"
 # 3) Secure.
 
 while true; do
-curl -u $USER:$PASS http://$SERVICE_ENDPOINT/apitoken > api_token
+curl http://$SERVICE_ENDPOINT/apitoken?user=$USER&pass=$PASS > api_token
 API_TOKEN=`cat api_token`
 curl http://$SERVICE_ENDPOINT/task?api_token=$API_TOKEN > task_exists_response
 grep 404 task_exists_response && curl http://$SERVICE_ENDPOINT/task/start?api_token=$API_TOKEN > task_run_response
