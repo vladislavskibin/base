@@ -5,7 +5,7 @@ PASS="test"
 SERVICE_ENDPOINT="10.0.0.255:9999"
 API_TOKEN_VALID_TIME=300
 SLEEP_TIME=60
-CURL_PARAMETRS="-s --connect-timeout 10 --max-time 10" # These parameters are specific to the server
+CURL_PARAMETERS="-s --connect-timeout 10 --max-time 10" # These parameters are specific to the server
 LOG_FILE="/var/log/task_control_log"
 
 # INPUT:
@@ -24,7 +24,7 @@ LOG_FILE="/var/log/task_control_log"
 
 get_API_token () { #get token
  echo "New API_TOKEN was requested on `date '+%Y-%m-%d %H:%M:%S'`" >> $LOG_FILE
- API_TOKEN=`curl $CURL_PARAMETRS http://$SERVICE_ENDPOINT/apitoken?user=$USER\&pass=$PASS`
+ API_TOKEN=`curl $CURL_PARAMETERS http://$SERVICE_ENDPOINT/apitoken?user=$USER\&pass=$PASS`
 }
 
 check_API_token () { # check existence of token and attempt to obtain tokens if it absence
@@ -36,7 +36,7 @@ while [ -z $API_TOKEN ]; do
 }
 
 task_restart_command (){
-curl $CURL_PARAMETRS http://$SERVICE_ENDPOINT/task/start?api_token=$API_TOKEN
+curl $CURL_PARAMETERS http://$SERVICE_ENDPOINT/task/start?api_token=$API_TOKEN
 }
 
 get_API_token
@@ -57,7 +57,7 @@ if [ $(($TIME_DIFF+$SLEEP_TIME)) -ge $API_TOKEN_VALID_TIME ] #add SLEEP_TIME to 
         API_TOKEN_EXISTING_TIME=`date '+%s'`
 fi
 
-RESULT=`curl -I $CURL_PARAMETRS http://${SERVICE_ENDPOINT} | head -1 | awk '{print $2}'` #use only HTTP codes
+RESULT=`curl -I $CURL_PARAMETERS http://${SERVICE_ENDPOINT} | head -1 | awk '{print $2}'` #use only HTTP codes
 
 if [ "$RESULT" -eq "404" ] || [ "$RESULT" -eq "500" ]; then
         echo "Task error $RESULT was recieved on `date '+%Y-%m-%d %H:%M:%S'`" >> $LOG_FILE
@@ -72,4 +72,3 @@ else
         task_restart_command
 fi
 done
-
